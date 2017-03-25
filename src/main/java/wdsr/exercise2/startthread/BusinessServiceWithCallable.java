@@ -2,15 +2,21 @@ package wdsr.exercise2.startthread;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BusinessServiceWithCallable {
-	private final ExecutorService executorService;	
-	private final NumericHelper helper;
+public class BusinessServiceWithCallable 
+	{
+	private final ExecutorService mExecutorService;	
+	private final NumericHelper mHelper;
 	
-	public BusinessServiceWithCallable(ExecutorService executorService, NumericHelper helper) {
-		this.executorService = executorService;
-		this.helper = helper;
-	}
+	public BusinessServiceWithCallable( ExecutorService executorService, NumericHelper helper ) {
+		mExecutorService = executorService;
+		mHelper = helper;
+		}
 	
 	/**
 	 * Calculates a sum of 100 random numbers.
@@ -18,15 +24,29 @@ public class BusinessServiceWithCallable {
 	 * Each random number is calculated asynchronously.
 	 * @return sum of 100 random numbers.
 	 */
+	
 	public long sumOfRandomInts() throws InterruptedException, ExecutionException {	
 		long result = 0;
 		
-		// TODO Task: 
-		// 1. create 100 Callable objects that invoke helper.nextRandom in their call() method.
-		// 2. submit all Callable objects to executorService (executorService.submit or executorService.invokeAll)
-		// 3. sum up the results - each random number can be retrieved using future.get() method.
-		// 4. return the computed result.
+		Callable<Integer> callableObject = new Callable<Integer>() {
+			@Override
+			public Integer call() {
+				return mHelper.nextRandom();
+				}
+			};
+			
+		Collection<Callable<Integer>> callableCollection = new ArrayList<Callable<Integer>>();
+		
+		for ( int i=0; i<100; i++ ) {
+			callableCollection.add( callableObject );
+			}		
+		
+		List<Future<Integer>> futureList = mExecutorService.invokeAll( callableCollection );
+		
+		for ( Future<Integer> future : futureList ) {
+			result += future.get();
+			}
 		
 		return result;
+		}
 	}
-}
