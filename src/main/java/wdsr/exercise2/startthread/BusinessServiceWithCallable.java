@@ -10,12 +10,12 @@ import java.util.List;
 
 public class BusinessServiceWithCallable 
 	{
-	private final ExecutorService mExecutorService;	
-	private final NumericHelper mHelper;
+	private final ExecutorService executorService;	
+	private final NumericHelper helper;
 	
 	public BusinessServiceWithCallable( ExecutorService executorService, NumericHelper helper ) {
-		mExecutorService = executorService;
-		mHelper = helper;
+		this.executorService = executorService;
+		this.helper = helper;
 		}
 	
 	/**
@@ -31,7 +31,7 @@ public class BusinessServiceWithCallable
 		Callable<Integer> callableObject = new Callable<Integer>() {
 			@Override
 			public Integer call() {
-				return mHelper.nextRandom();
+				return helper.nextRandom();
 				}
 			};
 			
@@ -41,7 +41,7 @@ public class BusinessServiceWithCallable
 			callableCollection.add( callableObject );
 			}		
 		
-		List<Future<Integer>> futureList = mExecutorService.invokeAll( callableCollection );
+		List<Future<Integer>> futureList = executorService.invokeAll( callableCollection );
 		
 		for ( Future<Integer> future : futureList ) {
 			result += future.get();

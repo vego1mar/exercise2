@@ -5,12 +5,12 @@ import java.util.concurrent.Executors;
 
 public class BusinessServiceWithExecutor 
 	{
-	private NumericHelper mHelper;
-	private ExecutorService mExecutorService;
+	private NumericHelper helper;
+	private ExecutorService executorService;
 	
 	public BusinessServiceWithExecutor( NumericHelper helper ) {
-		mHelper = helper;
-		mExecutorService = Executors.newCachedThreadPool();
+		this.helper = helper;
+		this.executorService = Executors.newCachedThreadPool();
 		}
 
 	/**
@@ -24,10 +24,10 @@ public class BusinessServiceWithExecutor
 		// TODO Task: execute the logic below using java.util.concurrent.ExecutorService
 		// The ExecutorService should be declared as a field, not a local variable.
 		
-		mExecutorService.execute( new Runnable() {
+		executorService.execute( new Runnable() {
 			@Override
 			public void run() {
-				long value = mHelper.findFibonacciValue( n );
+				long value = helper.findFibonacciValue( n );
 				callback.fibonacciComputed( value );
 				}
 			});
