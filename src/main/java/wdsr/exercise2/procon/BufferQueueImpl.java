@@ -1,15 +1,16 @@
 package wdsr.exercise2.procon;
 
-/**
- * Task: implement Buffer interface using one of *Queue classes from java.util.concurrent package.
- */
+import java.util.concurrent.BlockingQueue;
+
 public class BufferQueueImpl implements Buffer {
-	public void submitOrder(Order order) throws InterruptedException {
-		// TODO
-	}
+	private BlockingQueue<Order> blockingQueue;
+	
+	public void submitOrder( Order order ) throws InterruptedException {
+		blockingQueue.put( order );
+		}
 	
 	public Order consumeNextOrder() throws InterruptedException {
-		// TODO
-		return null;
+		return blockingQueue.take();
+		}
+	
 	}
-}
